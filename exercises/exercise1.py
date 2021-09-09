@@ -24,7 +24,7 @@ class Gossip(Device):
 
     def run(self):
         # the following is your termination condition, but where should it be placed?
-        # if len(self._secrets) == self.number_of_devices():
+        # if len(self._secrets) == self._number_of_devices():
         #    return
         return
 
