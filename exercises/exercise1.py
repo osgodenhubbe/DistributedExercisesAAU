@@ -1,3 +1,5 @@
+import random
+
 from emulators.Device import Device
 from emulators.Medium import Medium
 from emulators.MessageStub import MessageStub
@@ -24,8 +26,24 @@ class Gossip(Device):
 
     def run(self):
         # the following is your termination condition, but where should it be placed?
-        # if len(self._secrets) == self._number_of_devices():
-        #    return
+
+        for device in range(0, self.number_of_devices()):
+            if device == self.index():
+                continue
+
+            message = GossipMessage(self.index(), device, self._secrets)
+
+            self.medium().send(message)
+
+            ingoing = self.medium().receive()
+            while ingoing is None:
+                ingoing = self.medium().receive()
+
+            self._secrets.add(ingoing.source)
+
+            if len(self._secrets) == self._number_of_devices:
+                return
+
         return
 
     def print_result(self):
